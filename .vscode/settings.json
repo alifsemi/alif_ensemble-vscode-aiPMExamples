@@ -1,0 +1,36 @@
+{
+    "files.associations": {
+        "*.h": "c",
+    },
+
+    "cmake.configureOnOpen": false,
+
+    "cortex-debug.variableUseNaturalFormat": false,
+    "cmsis-csolution.actions": [
+        {
+            "path": "alif.csolution.yaml",
+            "target": "HP",
+            "config": {
+                "debug": "Alif Ensemble Multicore Debug",
+                "run": "Build multicore (debug)"
+            },
+            "projects": [
+                {
+                    "path": "HP_app/HP_app.cproject.yaml",
+                    "config": {
+                        "debug": "Alif Ensemble Debug (Cortex-Debug)"
+                    }
+                }
+            ]
+        },
+        {
+            "path": "alif.csolution.yaml",
+            "target": "HE",
+            "config": {
+                "debug": "Alif Ensemble Debug (Cortex-Debug)",
+                "run": "Build multicore (debug)"
+            }
+        }
+    ],
+    "C_Cpp.errorSquiggles": "disabled",
+}
