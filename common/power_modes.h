@@ -1,0 +1,14 @@
+
+typedef enum _POWER_MODE_TYPE {
+    GO_MODE=1,
+    READY_MODE,
+    IDLE_MODE,
+    STANDBY_MODE,
+    STOP_MODE=5
+}POWER_MODE_TYPE;
+
+#define POWER_TYPE_OFFSET 0
+#define POWER_MODE_OFFSET 1
+#define START_OFFSET 2
+
+
