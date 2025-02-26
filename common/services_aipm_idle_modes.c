@@ -63,7 +63,12 @@ void execute_idle_mode_usecase(uint32_t mode_number)
 {
     UNUSED(mode_number);
 
-    while(1) pm_core_enter_deep_sleep_request_subsys_off();
+    while(1) 
+    {
+      __disable_irq();
+      pm_core_enter_deep_sleep_request_subsys_off();
+      __enable_irq();
+    }
 }
 
 /**
@@ -98,8 +103,8 @@ void configure_idle_mode_profiles(uint32_t mode_number,
         offp->dcdc_mode         = DCDC_MODE_PFM_FORCED;
         offp->dcdc_voltage      = DCDC_VOUT_0825;
         offp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
-        offp->vtor_address      = 0;
-        offp->vtor_address_ns   = 0;
+        offp->vtor_address      = SCB->VTOR;
+        offp->vtor_address_ns   = SCB->VTOR;
         break;
     case 2:
         runp->cpu_clk_freq      = CLOCK_FREQUENCY_76_8_RC_MHZ;
@@ -117,13 +122,13 @@ void configure_idle_mode_profiles(uint32_t mode_number,
         offp->aon_clk_src       = CLK_SRC_LFXO;
         offp->stby_clk_src      = CLK_SRC_HFRC;
         offp->stby_clk_freq     = SCALED_FREQ_RC_STDBY_0_6_MHZ;
-        offp->memory_blocks     = BACKUP4K_MASK;
+        offp->memory_blocks     = BACKUP4K_MASK | SRAM5_1_MASK | SRAM5_2_MASK ;
         offp->power_domains     = PD_SYST_MASK;
         offp->dcdc_mode         = DCDC_MODE_PFM_FORCED;
         offp->dcdc_voltage      = DCDC_VOUT_0825;
         offp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
-        offp->vtor_address      = 0;
-        offp->vtor_address_ns   = 0;
+        offp->vtor_address      = SCB->VTOR;
+        offp->vtor_address_ns   = SCB->VTOR;
         break;
     default:
         /* this should not happen */
