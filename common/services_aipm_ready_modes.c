@@ -78,21 +78,41 @@ void execute_ready_mode_usecase(uint32_t mode_number)
     case 1:
 #if defined(M55_HE)
         /* go to subsystem off */
-        while(1) pm_core_enter_deep_sleep_request_subsys_off();
+        while(1) 
+        {
+           __disable_irq(); 
+           pm_core_enter_deep_sleep_request_subsys_off();
+           __enable_irq();
+        }
 #endif
 
         /* function call to sleep CPU here */
-        while(1) pm_core_enter_deep_sleep();
+        while(1) 
+        {
+           __disable_irq(); 
+           pm_core_enter_deep_sleep();
+           __enable_irq();
+        }
 
         break;
     case 2:
 #if defined(M55_HP)
         /* go to subsystem off */
-        while(1) pm_core_enter_deep_sleep_request_subsys_off();
+        while(1) 
+        {
+          __disable_irq();
+          pm_core_enter_deep_sleep_request_subsys_off();
+          __enable_irq();
+        }
 #endif
 
         /* function call to sleep CPU here */
-        while(1) pm_core_enter_deep_sleep();
+        while(1) 
+        {
+           __disable_irq();
+           pm_core_enter_deep_sleep();
+           __enable_irq();
+        }
 
         break;
     default:
@@ -109,7 +129,6 @@ void configure_ready_mode_profiles(uint32_t mode_number,
     runp->dcdc_mode = DCDC_MODE_PFM_FORCED;
     runp->dcdc_voltage = 825;
     runp->vdd_ioflex_3V3 = IOFLEX_LEVEL_1V8;
-    runp->ip_clock_gating = 0;
     runp->phy_pwr_gating = 0;
 
     offp->wakeup_events     = 0;
