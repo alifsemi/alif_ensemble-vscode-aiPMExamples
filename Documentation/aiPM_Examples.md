@@ -2,13 +2,13 @@
 
 Application Note
 
-**Ensemble®** **MCU and Fusion Processors** **Power Modes**
+**Ensemble®**
 
-**Version 1.2**
+**MCU and Fusion Processors**
 
+**Power Modes**
 
-**<u>  
-</u>**
+**Version 1.3**
 
 # Introduction
 
@@ -50,7 +50,7 @@ To begin measuring power you will need to remove the jumper that is pre-installe
 
 <figure>
 <img src="images/media/image2.png" style="width:5.41in;height:1.61in" alt="A diagram of a power outlet Description automatically generated" />
-<figcaption><p>Figure 1 Electrical Connections to Ensemble DevKit</p></figcaption>
+<figcaption><p>Electrical Connections to Ensemble DevKit</p></figcaption>
 </figure>
 
 #### Ensemble DevKits Before Hardware Revision D
@@ -59,7 +59,7 @@ Prior to hardware revision D of the DevKit (the revision is visible on the back 
 
 <figure>
 <img src="images/media/image3.png" style="width:6.5in;height:1.60417in" alt="A yellow square with black text Description automatically generated" />
-<figcaption><p>Figure 2 CPU Power Supplies Before Rev D</p></figcaption>
+<figcaption><p>CPU Power Supplies Before Rev D</p></figcaption>
 </figure>
 
 ### Useful Measuring Points
@@ -78,7 +78,7 @@ Prior to hardware revision D of the DevKit (the revision is visible on the back 
 
 <figure>
 <img src="images/media/image4.png" style="width:6.5in;height:4.41271in" alt="A black and white grid with black lines and white text Description automatically generated with medium confidence" />
-<figcaption><p>Figure 3 Datasheet Power Modes from Ensemble E3 Datasheet (current consumption at 3.3V supply)</p></figcaption>
+<figcaption><p>Datasheet Power Modes from Ensemble E3 Datasheet (current consumption at 3.3V supply)</p></figcaption>
 </figure>
 
 # CPU Power States
@@ -128,6 +128,13 @@ The default system configuration is to keep PD-6 SYST in the always-on state. Th
 Configuring PD-6 SYST to be dynamic-off will allow the shared resources to power off when not being accessed. That saves power but it means SRAM0 and SRAM1 banks will lose their contents, and the shared peripherals will lose their configurations each time PD-6 is off since they all reside in the same power domain. While PD-6 is dynamic-off, there are still resources outside of PD-6, such as LP- peripherals in PD-0 and PD-2 and SRAMs in PD-4 that are still retained. Many device configuration registers are also in these lower power domains, so their contents are not lost while PD-6 is dynamic-off. Any bus transactions which pass through the main interconnect within SYST will turn on the power domain but only long enough to service the transfer.
 
 This dynamic-off feature is for applications running on the RTSS-HP or RTSS-HE to be in a limited and low-power state where they are using only TCM, MRAM, and peripherals within PD-0 and PD-2. In this scenario, application code can be stored in MRAM or TCM or a mix of the two. The instruction and data caches beside the M55 cores will help to reduce the need to read things from MRAM while XIP.
+
+## E3 Series MCU Datasheet Power Modes
+
+<figure>
+<img src="images/media/image4.png" style="width:6.5in;height:4.41271in" />
+<figcaption><p>Datasheet Power Modes from Ensemble E3 Datasheet</p></figcaption>
+</figure>
 
 ## MCU GO/READY/IDLE Modes
 
@@ -205,9 +212,9 @@ Refer to the Getting started guide [Getting started](https://github.com/alifsemi
 
 Install VSCode with CMSIS extension version v1.38.0 and clone the aiPM project with the instructions below:
 
-git clone [Git project](https://github.com/AlifSemiDev/ensemble_vscode_aiPMExamples_DEV.git)
+git clone \[Git project\]
 
-cd alif_vscode-template
+cd ensemble_vscode_aiPMExamples_DEV
 
 git submodule update –init
 
@@ -224,11 +231,9 @@ Open the project in VSCode. This project supports multicore compilation and prog
 
 After the reset in hard maintenance mode, go to the main menu and select MRAM and Fast Erase MRAM to erase the MRAM before flashing the software.
 
-<figure>
 <img src="images/media/image6.png" style="width:6.5in;height:3.14236in" alt="A computer screen shot of a black screen Description automatically generated" />
-<figcaption><p>Figure 5 Fast Erase MRAM</p></figcaption>
-</figure>
 
+Figure 5 Fast Erase MRAM
 
 3)  Delete the out and tmp folder on VSCode. This ensures that the VScode builds the project from scratch.
 
@@ -253,6 +258,8 @@ Press F1 and in Run Tasks choose *Program with Security Toolkit* *(multicore)*.
 ## Datasheet Power Mode Examples
 
 For Ensemble E3, E5, and E7 these demo applications expect both the HE and the HP cores to be running the same power mode example together. Although only one core may be running at the end of the power example, such as with GO_3, both cores need to be enabled and running the power modes example at the start. For the E1 then only the HE core needs to be built and run. Refer to Figure 3 Datasheet Power Modes from Ensemble E3 Datasheet for more information or, refer to the E1 Datasheet if you are only exercising the RTSS-HE. Currently, the examples are not able to exercise the APSS Cortex-A32 cores or the RTSS Ethos-U55 NPUs. These power modes examples only exercise the RTSS subsystems. Your power results will be the same as those in Figure 1 whether you are using an E3, E5, or E7 processor.
+
+Note: When JTAG is active, the WFI/WFE are in no-op, the device will not enter any low power mode. The examples need to be built and run on the board using the MRAM flash instructions using the Security toolkit given in the building section above.
 
 # Running an Example on the Board
 
@@ -303,14 +310,14 @@ The CLI application requires a serial communication interface. It is suggested t
 <figcaption><p>Figure 12 Terminal mode maintenance tool</p></figcaption>
 </figure>
 
-3)  The serial terminal window shows a user friendly CLI application. It allows the user to choose the respective power modes to run from.
+The serial terminal window shows a user friendly CLI application. It allows the user to choose the respective power modes to run from.
 
 <figure>
 <img src="images/media/image15.png" style="width:4.56968in;height:6.40311in" alt="A screenshot of a computer Description automatically generated" />
 <figcaption><p>Figure 13 Command line interface tool</p></figcaption>
 </figure>
 
-4)  The maintenance application displays the chosen mode. Yellow and green signify both HE and HP core running the examples.
+The maintenance application displays the chosen mode. Yellow and green signify both HE and HP core running the examples.
 
 <figure>
 <img src="images/media/image16.png" style="width:6.5in;height:3.5125in" alt="A screenshot of a computer Description automatically generated" />
@@ -487,17 +494,17 @@ information in this document. Alif sells products according to standards terms a
 
 ## Related Documents and Tools
 
-n Alif Semiconductor device series-specific Hardware Reference Manual (HWRM)
+- Alif Semiconductor device series-specific Hardware Reference Manual (HWRM)
 
-n Alif Semiconductor device series-specific Software Reference Manual (SWRM)
+- Alif Semiconductor device series-specific Software Reference Manual (SWRM)
 
-n Alif Semiconductor device series-specific Datasheet
+- Alif Semiconductor device series-specific Datasheet
 
 For additional Alif Semiconductor technical documentation and software resources please visit:
 
-n [User Guides & App Notes](https://alifsemi.com/support/application-notes-user-guides/ensemble/)
+- [User Guides & App Notes](https://alifsemi.com/support/application-notes-user-guides/ensemble/)
 
-n [Software & Tools](https://alifsemi.com/support/software-tools/ensemble/)
+- [Software & Tools](https://alifsemi.com/support/software-tools/ensemble/)
 
 For managing software configurations of device resources, power, pins, clocks, DMA requests, interrupts, and various other additional settings, refer to the [Alif Conductor](https://conductor.alifsemi.com/) tool.
 
@@ -536,3 +543,4 @@ All other product or service names are the property of their respective owners.
 | 1.0 | Initial public release |
 | 1.1 | Added “Troubleshooting” section. Updated Figure 3 to reflect Datasheet v2.8. Updated GO_2 and GO_3 screen shots to reflect Coremark power draw instead of while (1) power draw. |
 | 1.2 | Modified the document to accommodate multi core building using VSCode. Added the instructions to use the CLI. Eliminated the manual building and cmake related commands since it is no longer applicable. |
+| 1.3 | Removed the incorrect git project hyperlink |
