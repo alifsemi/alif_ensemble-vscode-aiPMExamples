@@ -71,7 +71,12 @@ void execute_standby_mode_usecase(uint32_t mode_number)
 {
     UNUSED(mode_number);
 
-    while(1) pm_core_enter_deep_sleep_request_subsys_off();
+    while(1) 
+    {
+      __disable_irq();
+      pm_core_enter_deep_sleep_request_subsys_off();
+      __enable_irq();
+    }
 }
 
 /**
