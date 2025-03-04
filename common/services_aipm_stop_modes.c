@@ -93,7 +93,12 @@ void execute_stop_mode_usecase(uint32_t mode_number)
     }
 
 #endif
-    pm_core_enter_deep_sleep_request_subsys_off();
+while(1) 
+{
+  __disable_irq();
+  pm_core_enter_deep_sleep_request_subsys_off();
+  __enable_irq();
+}
 }
 
 void configure_stop_mode_profiles(uint32_t mode_number,
@@ -119,8 +124,8 @@ void configure_stop_mode_profiles(uint32_t mode_number,
     offp->dcdc_mode         = DCDC_MODE_PWM;
     offp->dcdc_voltage      = DCDC_VOUT_0825;
     offp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
-    offp->vtor_address      = 0;
-    offp->vtor_address_ns   = 0;
+    offp->vtor_address      = SCB->VTOR;
+    offp->vtor_address_ns   = SCB->VTOR;
 
     switch(mode_number) {
     case 1:

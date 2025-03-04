@@ -88,7 +88,12 @@ void execute_go_mode_usecase(uint32_t mode_number)
     case 3:
 #if defined(M55_HE)
         /* go to subsystem off */
-        while(1) pm_core_enter_deep_sleep_request_subsys_off();
+        while(1) 
+        {
+          __disable_irq();
+          pm_core_enter_deep_sleep_request_subsys_off();
+          __enable_irq();
+        }
 #endif
         /* function call to exercise CPU here */
         while(1) if (debug_loop == 0) break;
@@ -98,7 +103,12 @@ void execute_go_mode_usecase(uint32_t mode_number)
     case 5:
 #if defined(M55_HP)
         /* go to subsystem off */
-        while(1) pm_core_enter_deep_sleep_request_subsys_off();
+        while(1) 
+        {
+          __disable_irq();
+          pm_core_enter_deep_sleep_request_subsys_off();
+          __enable_irq();
+        }
 #endif
         /* function call to exercise CPU here */
         while(1) if (debug_loop == 0) break;
@@ -123,7 +133,6 @@ void configure_go_mode_profiles(uint32_t mode_number,
     runp->aon_clk_src = CLK_SRC_LFXO;
     runp->dcdc_mode = DCDC_MODE_PWM;
     runp->vdd_ioflex_3V3 = IOFLEX_LEVEL_1V8;
-    runp->ip_clock_gating = 0;
     runp->phy_pwr_gating = 0;
 
     offp->wakeup_events     = 0;
@@ -166,8 +175,8 @@ void configure_go_mode_profiles(uint32_t mode_number,
         runp->dcdc_voltage = 825;
         runp->dcdc_mode = DCDC_MODE_PWM;
         offp->stby_clk_src  = CLK_SRC_HFXO;
-        runp->memory_blocks = SRAM1_MASK;
-        offp->memory_blocks = SRAM1_MASK;
+        runp->memory_blocks = SERAM_MASK;
+        offp->memory_blocks = SERAM_MASK;
         runp->power_domains = PD_SYST_MASK;         /* PD6_SYST=ON */
         offp->power_domains = PD_SYST_MASK;         /* PD6_SYST=ON */
         break;
@@ -176,7 +185,7 @@ void configure_go_mode_profiles(uint32_t mode_number,
         runp->cpu_clk_freq = CLOCK_FREQUENCY_76_8_RC_MHZ;
         runp->scaled_clk_freq = SCALED_FREQ_RC_ACTIVE_76_8_MHZ;
         runp->run_clk_src = CLK_SRC_HFRC;
-        runp->dcdc_voltage = 775;
+        runp->dcdc_voltage = 825;
         runp->dcdc_mode = DCDC_MODE_PWM;
         offp->stby_clk_src  = CLK_SRC_HFRC;
         runp->memory_blocks = SERAM_MASK;
@@ -189,7 +198,7 @@ void configure_go_mode_profiles(uint32_t mode_number,
         runp->cpu_clk_freq = CLOCK_FREQUENCY_76_8_RC_MHZ;
         runp->scaled_clk_freq = SCALED_FREQ_RC_ACTIVE_19_2_MHZ;
         runp->run_clk_src = CLK_SRC_HFRC;
-        runp->dcdc_voltage = 775;
+        runp->dcdc_voltage = 825;
         runp->dcdc_mode = DCDC_MODE_PWM;
         offp->stby_clk_src  = CLK_SRC_HFRC;
         runp->memory_blocks = SERAM_MASK;
@@ -247,7 +256,6 @@ uint32_t exercise_aipm_go_modes(char *p_test_name,
 
 if ( power_mode > 2)
 {
-  /* STDBY CLK in active mode when PFM is forced */
   runp.dcdc_mode = DCDC_MODE_PFM_FORCED;
 
   msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);

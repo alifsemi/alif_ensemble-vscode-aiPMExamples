@@ -11,9 +11,6 @@ project:
         - file: m55_services_main.c
         - file: ../common/debug_clks.c
         - file: ../common/debug_pwr.c
-        - file: ../common/drv_lptimer.c
-        - file: ../common/power_common.c
-        - file: ../common/vbat_rtc.c
         - file: ../common/services_lib_interface.c
   output:
     base-name: $Project$
