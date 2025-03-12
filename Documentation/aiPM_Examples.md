@@ -8,7 +8,8 @@ Application Note
 
 **Power Modes**
 
-**Version 1.3**
+**Version 1.4**
+
 
 # Introduction
 
@@ -38,9 +39,9 @@ Power measurements can be made using any equipment of your choice. If a recommen
 
 Download the following packages to begin evaluating the Ensemble Power Modes example software.
 
-- app-release-exec-\<os\>-SE_FW_1.103.00, or later (\<os\> supported: windows, linux, macos)
+- app-release-exec-\<os\>-SE_FW_1.103.001, or later (\<os\> supported: windows, linux, macos)
 
-- se-host-services-release-SE_FW_1.103.00, or later
+- se-host-services-release-SE_FW_1.103.001, or later
 
 ## Evaluation Board Setup
 
@@ -142,7 +143,7 @@ Using this VSCode project, we have not replicated any GO Modes utilizing the APS
 
 Additionally, the examples use a while (1) loop instead of CoreMark to load the CPU, so GO_2 and GO_3 power will be slightly lower than shown.
 
-You may run these examples on an E3, E5, or E7 device, but you’ll only replicate the power numbers equivalent to an E3 device. Refer to Figure 3 Datasheet Power Modes from Ensemble E3 Datasheet for more information. Refer to the E1, E5, or E7 datasheet for more device specific power modes estimates.
+You may run these examples on an E3, E5, or E7 device, but you’ll only replicate the power numbers equivalent to an E3 device. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information. Refer to the E1, E5, or E7 datasheet for more device specific power modes estimates.
 
 These examples demonstrate just a sample of the possible power modes and configurations that the Ensemble processor may be in. The significant changes to note between the power modes are as follows:
 
@@ -198,7 +199,7 @@ When this example is run, all cores and power domains above PD-2 will turn off. 
 
 ## MCU STOP Mode
 
-When only the VBAT AON Region is on, and all other regions are off, then the device is in STOP Mode. In STOP mode the HFRC and HFXO are stopped leaving only LFXO. The peripherals in PD-0 will continue to run using the LFXO and they can be used to wake the processor out of STOP Mode.
+When only the VBAT AON Region is on, and all other regions are off, then the device is in STOP Mode. In STOP mode, the HFRC and HFXO are stopped, leaving only LFXO. The peripherals in PD-0 will continue to run using the LFXO, and they can be used to wake the processor out of STOP Mode.
 
 ### STOP Mode Software Example
 
@@ -210,38 +211,25 @@ File path: common/services_aipm_stop_modes.c
 
 Refer to the Getting started guide [Getting started](https://github.com/alifsemi/alif_vscode-template/blob/main/doc/getting_started.md) for installing VSCode, Alif Security toolkit, J-Link software and Git.
 
-Install VSCode with CMSIS extension version v1.38.0 and clone the aiPM project with the instructions below:
+Install VSCode with CMSIS extension version v1.38.0 and clone the aiPM project with the instructions below. This will clone the repo into a directory below the directory from which the command is run. Ideally, this command should be run from a VS Code terminal window.
 
-git clone \[Git project\]
+git clone https://github.com/alifsemi/alif_ensemble-vscode-aiPMExamples.git
 
-cd ensemble_vscode_aiPMExamples_DEV
+cd [ensemble_vscode_aiPMExamples_DEV](https://github.com/AlifSemiDev/ensemble_vscode_aiPMExamples_DEV/tree/Incorporate_review_comments)
 
 git submodule update –init
 
 Open the project in VSCode. This project supports multicore compilation and programming. Follow the instructions below to build the project and program the board with the software.
 
-1)  Open the maintenance tool in app-release-exec-windows-SE_FW_1.103.00_DEV\app-release-exec in the cmd prompt and determine the SE UART Port assignment. Refer to Determining UART Port assignment section in the [DevKit User Guide](https://alifsemi.com/support/kits/ensemble-devkit-gen2/)
+1)  Open the maintenance tool in app-release-exec-windows-SE_FW_1.103.001_DEV\app-release-exec (or a later version) in the cmd prompt and determine the SE UART Port assignment. Refer to “Determining UART Port Assignment” section in the [DevKit User Guide](https://alifsemi.com/support/kits/ensemble-devkit-gen2/)
 
-2)  Put the device in hard maintenance mode. Refer to the snapshot below:
+2)  Delete the out and tmp folder on VSCode. This ensures that the VScode builds the project from scratch.
 
-<figure>
-<img src="images/media/image5.png" style="width:6.5in;height:3.42361in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 4 Maintenance tool in Hard maintenance mode</p></figcaption>
-</figure>
-
-After the reset in hard maintenance mode, go to the main menu and select MRAM and Fast Erase MRAM to erase the MRAM before flashing the software.
-
-<img src="images/media/image6.png" style="width:6.5in;height:3.14236in" alt="A computer screen shot of a black screen Description automatically generated" />
-
-Figure 5 Fast Erase MRAM
-
-3)  Delete the out and tmp folder on VSCode. This ensures that the VScode builds the project from scratch.
-
-4)  Press F1 in VScode and in Run Tasks, choose *Build multicore* *(debug)*.
+3)  Press F1 in VScode and in Run Tasks, choose *Build multicore* *(debug)*.
 
 <figure>
-<img src="images/media/image7.png" style="width:6.5in;height:3.05347in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 6 VSCode building project</p></figcaption>
+<img src="images/media/image5.png" style="width:6.5in;height:3.05347in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>VSCode building project</p></figcaption>
 </figure>
 
 The program builds and generates the binaries and elf file for HE and HP applications in the out folder.
@@ -249,33 +237,43 @@ The program builds and generates the binaries and elf file for HE and HP applica
 Press F1 and in Run Tasks choose *Program with Security Toolkit* *(multicore)*.
 
 <figure>
-<img src="images/media/image8.png" style="width:6.5in;height:3.47222in" alt="A screenshot of a computer program Description automatically generated" />
-<figcaption><p>Figure 7 VSCode programming the board</p></figcaption>
+<img src="images/media/image6.png" style="width:6.5in;height:3.47222in" alt="A screenshot of a computer program Description automatically generated" />
+<figcaption><p>VSCode programming the board</p></figcaption>
 </figure>
 
 # Notes Before Running an Example on the DevKit
 
 ## Datasheet Power Mode Examples
 
-For Ensemble E3, E5, and E7 these demo applications expect both the HE and the HP cores to be running the same power mode example together. Although only one core may be running at the end of the power example, such as with GO_3, both cores need to be enabled and running the power modes example at the start. For the E1 then only the HE core needs to be built and run. Refer to Figure 3 Datasheet Power Modes from Ensemble E3 Datasheet for more information or, refer to the E1 Datasheet if you are only exercising the RTSS-HE. Currently, the examples are not able to exercise the APSS Cortex-A32 cores or the RTSS Ethos-U55 NPUs. These power modes examples only exercise the RTSS subsystems. Your power results will be the same as those in Figure 1 whether you are using an E3, E5, or E7 processor.
+For Ensemble E3, E5, and E7 these demo applications expect both the HE and the HP cores to be running the same power mode example together. Although only one core may be running at the end of the power example, such as with GO_3, both cores need to be enabled and running the power modes example at the start. For the E1 then only the HE core needs to be built and run. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information or, refer to the E1 Datasheet if you are only exercising the RTSS-HE. Currently, the examples are not able to exercise the APSS Cortex-A32 cores or the RTSS Ethos-U55 NPUs. These power modes examples only exercise the RTSS subsystems. Your power results will be the same as those in Figure 1 whether you are using an E3, E5, or E7 processor.
 
 Note: When JTAG is active, the WFI/WFE are in no-op, the device will not enter any low power mode. The examples need to be built and run on the board using the MRAM flash instructions using the Security toolkit given in the building section above.
 
 # Running an Example on the Board
 
-A command line interface has been developed to enable the user to be able to run demo examples for all the power types and their respective modes. The following demonstrates an example of using the CLI and how to choose the power type and mode.
+A command line interface has been developed to enable the user to run demo examples for all the power types and their respective modes. The following demonstrates an example of using the CLI and how to choose the power type and mode.
 
 Connect the UART ports P7.6(Rx) and P7.7(Tx) to the UART to USB Jumper J26 as seen in the snapshot below:
 
 <figure>
-<img src="images/media/image9.jpeg" style="width:6.49514in;height:4.87639in" />
-<figcaption><p>Figure 8 UART connections</p></figcaption>
+<img src="images/media/image7.jpeg" style="width:5.83153in;height:3.46154in" alt="A blue electronic board with wires and wires AI-generated content may be incorrect." />
+<figcaption><p>UART connections</p></figcaption>
 </figure>
 
 | MCU Pin | J15 Pin | J26 Pin |
 |:--------|:--------|:--------|
 | P7.6    | J15.8   | J26.3   |
 | P7.7    | J15.10  | J26.4   |
+
+<figure>
+<img src="images/media/image8.jpeg" style="width:3.02778in;height:2.07361in" alt="A close-up of a circuit board AI-generated content may be incorrect." />
+<figcaption><p>J15 Connections</p></figcaption>
+</figure>
+
+<figure>
+<img src="images/media/image9.jpeg" style="width:3.04372in;height:2.29808in" alt="A close-up of a blue circuit board AI-generated content may be incorrect." />
+<figcaption><p>J26 Connections</p></figcaption>
+</figure>
 
 The CLI application requires a serial communication interface. It is suggested to use tools like Teraterm/Putty. The below instructions demonstrate the setup of Teraterm. Teraterm executable is available for download in the following link.
 
@@ -284,44 +282,44 @@ The CLI application requires a serial communication interface. It is suggested t
 1)  Open teraterm on the available serial port (this port is different than the port that was assigned to SEUART) and set the baudrate to 115200
 
 <figure>
-<img src="images/media/image10.png" style="width:5.72in;height:3.48in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 9 Teraterm terminal settings1</p></figcaption>
+<img src="images/media/image10.png" style="width:4.81064in;height:2.92675in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Teraterm terminal settings1</p></figcaption>
 </figure>
 
 <figure>
-<img src="images/media/image11.png" style="width:4.67222in;height:4.5in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 10 Teraterm terminal settings2</p></figcaption>
+<img src="images/media/image11.png" style="width:3.42477in;height:3.29854in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Teraterm terminal settings2</p></figcaption>
 </figure>
 
 <figure>
-<img src="images/media/image12.png" style="width:5.77659in;height:3in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 10 Teraterm terminal settings3</p></figcaption>
+<img src="images/media/image12.png" style="width:4.75234in;height:2.46807in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Teraterm terminal settings3</p></figcaption>
 </figure>
 
 <figure>
-<img src="images/media/image13.png" style="width:4.73635in;height:2.42374in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 11 Teraterm terminal settings4</p></figcaption>
+<img src="images/media/image13.png" style="width:3.90876in;height:2.00023in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Teraterm terminal settings4</p></figcaption>
 </figure>
 
 2)  Run the maintenance tool and choose Option 4 Utilities and, choose 1 for Terminal Mode and press the RESET button on the board. This starts the program and runs to main and the CLI pops up on the Terminal.
 
 <figure>
 <img src="images/media/image14.png" style="width:6.5in;height:3.77639in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 12 Terminal mode maintenance tool</p></figcaption>
+<figcaption><p>Terminal mode maintenance tool</p></figcaption>
 </figure>
 
 The serial terminal window shows a user friendly CLI application. It allows the user to choose the respective power modes to run from.
 
 <figure>
 <img src="images/media/image15.png" style="width:4.56968in;height:6.40311in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 13 Command line interface tool</p></figcaption>
+<figcaption><p>Command line interface tool</p></figcaption>
 </figure>
 
 The maintenance application displays the chosen mode. Yellow and green signify both HE and HP core running the examples.
 
 <figure>
 <img src="images/media/image16.png" style="width:6.5in;height:3.5125in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 14 Maintenance tool log</p></figcaption>
+<figcaption><p>Maintenance tool log</p></figcaption>
 </figure>
 
 # Results of Running the Examples on the Board
@@ -334,113 +332,117 @@ GO_2 and GO_3 datasheet definitions use Coremark to load the CPU cores. In these
 
 <figure>
 <img src="images/media/image17.png" style="width:6.4in;height:3.18974in" />
-<figcaption><p>Figure 15 Screenshot of GO_2</p></figcaption>
+<figcaption><p>Screenshot of GO_2</p></figcaption>
 </figure>
 
-Figure 15 demonstrates GO_2 at 22.8mA.
+The above screenshot demonstrates GO_2 at 22.8mA.
 
 <figure>
 <img src="images/media/image18.png" style="width:6.4in;height:3.18974in" />
-<figcaption><p>Figure 16 Screenshot of GO_3</p></figcaption>
+<figcaption><p>Screenshot of GO_3</p></figcaption>
 </figure>
 
-Figure 16 demonstrates GO_3 at 20.2mA
+The above screenshot demonstrates GO_3 at 20.2mA
 
 <figure>
 <img src="images/media/image19.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 17 Screenshot of GO_4</p></figcaption>
+<figcaption><p>Screenshot of GO_4</p></figcaption>
 </figure>
 
-Figure 17 demonstrates GO_4 at 2.35mA
+The above screenshot demonstrates GO_4 at 2.35mA
 
 <figure>
 <img src="images/media/image20.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 18 Screenshot of GO_5</p></figcaption>
+<figcaption><p>Screenshot of GO_5</p></figcaption>
 </figure>
 
-Figure 18 demonstrates GO_5 at 847uA
+The above screenshot demonstrates GO_5 at 847uA
 
 ## READY Modes
 
 <figure>
 <img src="images/media/image21.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 19 Screenshot of READY_1</p></figcaption>
+<figcaption><p>Screenshot of READY_1</p></figcaption>
 </figure>
 
-Figure 19 demonstrates READY_1 at 11.55mA
+The above screenshot demonstrates READY_1 at 11.55mA
 
 <figure>
 <img src="images/media/image22.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 20 Screenshot of READY_2</p></figcaption>
+<figcaption><p>Screenshot of READY_2</p></figcaption>
 </figure>
 
-Figure 20 demonstrates READY_2 at 1.25mA
+The above screenshot demonstrates READY_2 at 1.25mA
 
 ## IDLE Modes
 
 <figure>
 <img src="images/media/image23.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 21 Screenshot of IDLE_1</p></figcaption>
+<figcaption><p>Screenshot of IDLE_1</p></figcaption>
 </figure>
 
-Figure 21 demonstrates IDLE_1 at 3.45mA.
+The above screenshot demonstrates IDLE_1 at 3.45mA.
 
 <figure>
 <img src="images/media/image24.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 22 Screenshot of IDLE_2</p></figcaption>
+<figcaption><p>Screenshot of IDLE_2</p></figcaption>
 </figure>
 
-Figure 22 demonstrates IDLE_2 at 1.08mA.
+The above screenshot demonstrates IDLE_2 at 1.08mA.
 
 ## STANDBY Modes
 
 <figure>
 <img src="images/media/image25.png" style="width:6.5in;height:4.87639in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 23 Screenshot of STANDBY_1</p></figcaption>
+<figcaption><p>Screenshot of STANDBY_1</p></figcaption>
 </figure>
 
-Figure 23 demonstrates STANDBY_1 at 80uA
+The above screenshot demonstrates STANDBY_1 at 80uA.
 
 ## STOP Modes
 
 <figure>
 <img src="images/media/image26.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 24 Screenshot of STOP_1</p></figcaption>
+<figcaption><p>Screenshot of STOP_1</p></figcaption>
 </figure>
 
-Figure 24 demonstrates STOP_1 at 5.64uA
+The above screenshot demonstrates STOP_1 at 5.64uA
 
 <figure>
 <img src="images/media/image27.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 25 Screenshot of STOP_2</p></figcaption>
+<figcaption><p>Screenshot of STOP_2</p></figcaption>
 </figure>
 
-Figure 25 demonstrates STOP_2 at 1.52uA
+The above screenshot demonstrates STOP_2 at 1.52uA
 
 <figure>
 <img src="images/media/image28.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 26 Screenshot of STOP_3</p></figcaption>
+<figcaption><p>Screenshot of STOP_3</p></figcaption>
 </figure>
 
-Figure 26 demonstrates STOP_3 at 1.475uA
+The above screenshot demonstrates STOP_3 at 1.475uA
 
 <figure>
 <img src="images/media/image29.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 27 Screenshot of STOP_4</p></figcaption>
+<figcaption><p>Screenshot of STOP_4</p></figcaption>
 </figure>
 
-Figure 27 demonstrates STOP_4 at 1.43uA
+Figure 29 demonstrates STOP_4 at 1.43uA
 
 <figure>
 <img src="images/media/image30.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
-<figcaption><p>Figure 28 Screenshot of STOP_5</p></figcaption>
+<figcaption><p>Screenshot of STOP_5</p></figcaption>
 </figure>
 
-Figure 28 demonstrates STOP_5 at 1.26uA
+The above screenshot demonstrates STOP_5 at 1.26uA
 
-##  Recovering the Board After Running Examples
+##  Restoring the Board From An Illegal Condition
 
-Due to the demo applications changing clock modes and power modes, the SE UART communication may stop responding. To recover this, please follow the below steps to enter “hard maintenance mode” which will allow you to overwrite the previous application with a new application. Maintenance mode is a useful safe mode which prevents the SE from booting any applications written to MRAM and it prevents the SE from enabling any external crystal or PLL.
+The example applications in this repo are designed so that after entering a selected power mode and taking the measurements, user can return to the initial state where the CLI is looking for a selection of power mode, just press the RESET button.
+
+Due to an application changing clock modes or power modes without a way to wake up to a known state, or if an application has illegal memory accesses, the program may “hang” and the SEUART communication may stop responding.
+
+To restore the board, please follow the steps below to enter “hard maintenance mode” which will allow the user to erase the illegal application so you can program a new application. Hard Maintenance mode is a useful safe mode which prevents the SE from booting any applications written to MRAM, and it prevents the SE from enabling any external crystal or PLL.
 
 > \# Start maintenance tool
 >
@@ -542,5 +544,6 @@ All other product or service names are the property of their respective owners.
 |:---|:---|
 | 1.0 | Initial public release |
 | 1.1 | Added “Troubleshooting” section. Updated Figure 3 to reflect Datasheet v2.8. Updated GO_2 and GO_3 screen shots to reflect Coremark power draw instead of while (1) power draw. |
-| 1.2 | Modified the document to accommodate multi core building using VSCode. Added the instructions to use the CLI. Eliminated the manual building and cmake related commands since it is no longer applicable. |
+| 1.2 | Modified the document to accommodate multi-core building using VSCode. Added the instructions to use the CLI. Eliminated the manual building and cmake related commands since it is no longer applicable. |
 | 1.3 | Removed the incorrect git project hyperlink |
+| 1.4 | Rewrote sections on returning to the initial demo program state and restoring a board with a hung application |
