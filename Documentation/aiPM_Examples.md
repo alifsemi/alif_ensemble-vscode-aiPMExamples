@@ -75,13 +75,6 @@ Prior to hardware revision D of the DevKit (the revision is visible on the back 
 
 - RTSS_HE_CLK: P0_3 mode 5, P1_3 mode 5, P10_3 mode 5 (HE_CAMERA_PIXCLK register)
 
-# E3 Series MCU Datasheet Power Modes
-
-<figure>
-<img src="images/media/image4.png" style="width:6.5in;height:4.41271in" alt="A black and white grid with black lines and white text Description automatically generated with medium confidence" />
-<figcaption><p>Datasheet Power Modes from Ensemble E3 Datasheet (current consumption at 3.3V supply)</p></figcaption>
-</figure>
-
 # CPU Power States
 
 ## CPU Sleep State
