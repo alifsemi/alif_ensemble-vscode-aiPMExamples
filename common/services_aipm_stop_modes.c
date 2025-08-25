@@ -34,10 +34,10 @@
  *  M A C R O   D E F I N E S
  ******************************************************************************/
 
-#if defined(M55_HP)
+#if defined(M55_HP) || defined(E8_M55_HP)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HP_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_400MHZ
-#elif defined(M55_HE)
+#elif defined(M55_HE) || defined(E8_M55_HE)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HE_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_160MHZ
 #endif
@@ -75,12 +75,12 @@ void execute_stop_mode_usecase(uint32_t mode_number)
 {
     UNUSED(mode_number);
 
-#if defined(M55_HE)
+#if defined(M55_HE) || defined(E8_M55_HE)
     /* STOP_1 through STOP_3 will have BOD enabled */
     if (mode_number < 4) {
-        ANA_REG->VBAT_ANA_REG3 |= 1U << 8;
+        ANA->VBAT_ANA_REG3 |= 1U << 8;
     } else {
-        ANA_REG->VBAT_ANA_REG3 &= ~(1U << 8);
+        ANA->VBAT_ANA_REG3 &= ~(1U << 8);
     }
 
     /* STOP_5 will have RTC and LFXO disabled */
@@ -88,8 +88,8 @@ void execute_stop_mode_usecase(uint32_t mode_number)
         VBAT->RTC_CLK_EN = 1;
     } else {
         VBAT->RTC_CLK_EN = 0;
-        ANA_REG->MISC_CTRL &= ~1U;
-        ANA_REG->VBAT_ANA_REG1 &= ~(1U << 12);
+        ANA->MISC_CTRL &= ~1U;
+        ANA->VBAT_ANA_REG1 &= ~(1U << 12);
     }
 
 #endif
