@@ -12,27 +12,7 @@
             "showDevDebugOutput": "parsed",
             "device": "${command:cmsis-csolution.getDeviceName}_${command:cmsis-csolution.getProcessorName}",
             "interface": "jtag",
-            "serverArgs": ["-JLinkDevicesXmlPath" ".alif/JLinkDevices.xml"],
-            "preLaunchCommands": [
-                "monitor speed 15000"
-            ],
-            "postLaunchCommands": [
-                "set $sp = __Vectors[0]",
-                "set $pc = __Vectors[1]",
-                "set *0xe000ed08 = __Vectors"
-            ]
-        },
-        {
-            "name": "Alif Ensemble Multicore Debug",
-            "cwd": "${workspaceFolder}",
-            "executable": "./out/HP_app/HP_app.elf",
-            "request": "launch",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "servertype": "jlink",
-            "showDevDebugOutput": "parsed",
-            "device": "AE722F80F55D5_HP",
-            "interface": "jtag",
+            "serverArgs": ["-JLinkDevicesXmlPath", ".alif/JLinkDevices.xml"],
             "preLaunchCommands": [
                 "monitor speed 15000"
             ],
@@ -41,43 +21,16 @@
                 "set $pc = __Vectors[1]",
                 "set *0xe000ed08 = __Vectors"
             ],
-            "chainedConfigurations": {
+            "rttConfig": {
                 "enabled": true,
-                "waitOnEvent": "postInit",
-                "detached": true,
-                "lifecycleManagedByParent": true,
-                "launches": [
+                "address": "auto",
+                "decoders": [
                     {
-                        "name": "(secondary) Alif Ensemble Multicore Debug",
-                        "folder": "${workspaceFolder}"
+                        "port": 0,
+                        "type": "console"
                     }
                 ]
             }
-        },
-        {
-            "name": "(secondary) Alif Ensemble Multicore Debug",
-            "cwd": "${workspaceFolder}",
-            "executable": "./out/HE_app/HE_app.elf",
-            "request": "launch",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "servertype": "jlink",
-            "showDevDebugOutput": "parsed",
-            "device": "AE722F80F55D5_HE",
-            "interface": "jtag",
-            "presentation": {
-                "hidden": true,
-                "group": "",
-                "order": 1
-            },
-            "preLaunchCommands": [
-                "monitor speed 15000"
-            ],
-            "postLaunchCommands": [
-                "set $sp = __Vectors[0]",
-                "set $pc = __Vectors[1]",
-                "set *0xe000ed08 = __Vectors"
-            ]
         }
     ]
 }
