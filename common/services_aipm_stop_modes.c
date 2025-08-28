@@ -110,7 +110,7 @@ void configure_stop_mode_profiles(uint32_t mode_number,
     runp->run_clk_src       = CLK_SRC_PLL;
     runp->aon_clk_src       = CLK_SRC_LFXO;
     runp->memory_blocks     = 0;
-    runp->power_domains     = 0;
+    runp->power_domains     = PD_DBSS_MASK;
     runp->dcdc_mode         = DCDC_MODE_PWM;
     runp->dcdc_voltage      = DCDC_VOUT_0825;
     runp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
@@ -194,6 +194,7 @@ uint32_t exercise_aipm_stop_modes(char *p_test_name,
               SERVICES_error_to_string(msg_status),
               service_resp);
 
+  *(volatile uint32_t*)0x1A010400 = 0;// Switching the systop in host register off
   SERVICES_wait_ms(1500);
 
   execute_stop_mode_usecase(power_mode);

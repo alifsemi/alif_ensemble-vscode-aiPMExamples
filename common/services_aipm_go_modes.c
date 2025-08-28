@@ -252,6 +252,8 @@ uint32_t exercise_aipm_go_modes(char *p_test_name,
               SERVICES_error_to_string(msg_status),
               service_resp);
 
+  //Disabling systop in the SE Host register
+  *(volatile uint32_t*)0x1A010400 = 0;
   SERVICES_wait_ms(1500);
 
 if ( power_mode > 2)
