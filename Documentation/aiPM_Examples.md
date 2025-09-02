@@ -31,7 +31,7 @@ The Hardware Reference Manual (HWRM) describes all technical features of the Ens
 
 ## Equipment
 
-Alif Ensemble development kit (DevKit), such as the DK-E7. When loading the examples in this application note onto the board, there is no code loaded for the A32 cores, so they are off by default.
+Alif Ensemble development kit (DevKit), such as the DK-E7 or DK-E8. When loading the examples in this application note onto the board, there is no code loaded for the A32 cores, so they are off by default.
 
 Power measurements can be made using any equipment of your choice. If a recommendation is needed, please see the Joulescope JS220 ([www.joulescope.com](http://www.joulescope.com)). Its software is supported on Windows, macOS, and Ubuntu 22.04 LTS.
 
@@ -45,16 +45,22 @@ Download the following packages to begin evaluating the Ensemble Power Modes exa
 
 ## Evaluation Board Setup
 
-### Connections between Joulescope and Ensemble DevKit
+### Connections between Joulescope and Ensemble DevKit E7
 
 To begin measuring power you will need to remove the jumper that is pre-installed on J5 of the Ensemble DevKit. Then you will connect a current measurement device as shown in the image below. GND on the Devkit can be found on pin 1 of any of the four main headers. The 3.3V supply is sourced from J5 pin 2, passes through the current shunt or analyzer, and sinks to J5 pin 1. For calculating power, the voltage is measured at the output on J5 pin 1.
 
 <figure>
 <img src="images/media/image2.png" style="width:5.41in;height:1.61in" alt="A diagram of a power outlet Description automatically generated" />
-<figcaption><p>Electrical Connections to Ensemble DevKit</p></figcaption>
+<figcaption><p>Electrical Connections to Ensemble DevKit E7</p></figcaption>
 </figure>
 
-#### Ensemble DevKits Before Hardware Revision D
+On E8, please remove the jumper on JP2. You can choose to measure the voltage at 1.8V or 3.3V.
+<figure>
+<img src="images/media/image31.png" style="width:5.41in;height:1.61in" alt="A diagram of a power outlet Description automatically generated" />
+<figcaption><p>Electrical Connections to Ensemble DevKit E8</p></figcaption>
+</figure>
+
+#### Ensemble DevKits Before Hardware Revision D (E7)
 
 Prior to hardware revision D of the DevKit (the revision is visible on the back side of the PCB near jack J23), the CPU Power Supplies schematic looked like Figure 2 CPU Power Supplies Before Rev D which combined VDD_USB_3V3 with other MCU supplies on supply VDD_3V3 after jumper J5 and did not include VDD_BATT. When measuring current on J5, please note that the VDD_USB_3V3 supply contributes an additional 123 uA of always-present leakage added to the total MCU current and you will not see any power consumption due to VDD_BATT. Starting with hardware revision D the VDD_USB_3V3 supply can be disconnected using a newly added Jumper J31. VDD_BATT is now connected after J5 using VDD_3V3.
 
@@ -63,7 +69,7 @@ Prior to hardware revision D of the DevKit (the revision is visible on the back 
 <figcaption><p>CPU Power Supplies Before Rev D</p></figcaption>
 </figure>
 
-### Useful Measuring Points
+### Useful Measuring Points on E7
 
 - MCU current draw: jumper J5
 
@@ -130,13 +136,28 @@ This dynamic-off feature is for applications running on the RTSS-HP or RTSS-HE t
 <figcaption><p>Datasheet Power Modes from Ensemble E3 Datasheet</p></figcaption>
 </figure>
 
+## E8 Series MCU Datasheet Power Modes
+
+<figure>
+<img src="images/media/E8_table-1.png" style="width:6.5in;height:6.41271in" />
+<figcaption><p>Datasheet Power Modes from Ensemble E8 Datasheet-1</p></figcaption>
+</figure>
+
+<figure>
+<img src="images/media/E8_table-2.png" style="width:6.5in;height:4.41271in" />
+<figcaption><p>Datasheet Power Modes from Ensemble E8 Datasheet-2</p></figcaption>
+</figure>
+
+
 ## MCU GO/READY/IDLE Modes
 
 Using this VSCode project, we have not replicated any GO Modes utilizing the APSS Cortex-A32 cores or RTSS Ethos-U55 NPU units at this time. Although this application note is applicable to the RTSS cores in all Ensemble processors, *what is demonstrated in these examples is equivalent to Ensemble E3 devices running GO_2 and below*.
 
 Additionally, the examples use a while (1) loop instead of CoreMark to load the CPU, so GO_2 and GO_3 power will be slightly lower than shown.
 
-You may run these examples on an E3, E5, or E7 device, but you’ll only replicate the power numbers equivalent to an E3 device. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information. Refer to the E1, E5, or E7 datasheet for more device specific power modes estimates.
+You may run these examples on an E3, E5, E7 device, but you’ll only replicate the power numbers equivalent to an E3 device. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information. Refer to the E1, E5, or E7 datasheet for more device specific power modes estimates.
+
+For E8 power estimates, please refer to E8 Datasheet power modes snapshot.
 
 These examples demonstrate just a sample of the possible power modes and configurations that the Ensemble processor may be in. The significant changes to note between the power modes are as follows:
 
@@ -214,11 +235,11 @@ git submodule update –init
 
 Open the project in VSCode. This project supports multicore compilation and programming. Follow the instructions below to build the project and program the board with the software.
 
-1)  Open the maintenance tool in app-release-exec-windows-SE_FW_1.103.001_DEV\app-release-exec (or a later version) in the cmd prompt and determine the SE UART Port assignment. Refer to “Determining UART Port Assignment” section in the [DevKit User Guide](https://alifsemi.com/support/kits/ensemble-devkit-gen2/)
+1)  Open the maintenance tool in app-release-exec-windows-SE_FW_1.107.000_DEV\app-release-exec (or a later version) in the cmd prompt and determine the SE UART Port assignment. Refer to “Determining UART Port Assignment” section in the [DevKit User Guide](https://alifsemi.com/support/kits/ensemble-devkit-gen2/)
 
 2)  Delete the out and tmp folder on VSCode. This ensures that the VScode builds the project from scratch.
 
-3)  Press F1 in VScode and in Run Tasks, choose *Build multicore* *(debug)*.
+3)  Press F1 in VScode and in Run Tasks, choose *Build multicore* *(debug)*. This builds the HE and HP binaries for both E7 and E8.
 
 <figure>
 <img src="images/media/image5.png" style="width:6.5in;height:3.05347in" alt="A screenshot of a computer Description automatically generated" />
@@ -227,10 +248,10 @@ Open the project in VSCode. This project supports multicore compilation and prog
 
 The program builds and generates the binaries and elf file for HE and HP applications in the out folder.
 
-Press F1 and in Run Tasks choose *Program with Security Toolkit* *(multicore)*.
+Press F1 and in Run Tasks choose *Program with Security Toolkit* *(multicore)* based on the version being built. (E7 or E8). Please refer to the snapshot below.
 
 <figure>
-<img src="images/media/image6.png" style="width:6.5in;height:3.47222in" alt="A screenshot of a computer program Description automatically generated" />
+<img src="images/media/image35.png" style="width:6.5in;height:3.47222in" alt="A screenshot of a computer program Description automatically generated" />
 <figcaption><p>VSCode programming the board</p></figcaption>
 </figure>
 
@@ -238,35 +259,43 @@ Press F1 and in Run Tasks choose *Program with Security Toolkit* *(multicore)*.
 
 ## Datasheet Power Mode Examples
 
-For Ensemble E3, E5, and E7 these demo applications expect both the HE and the HP cores to be running the same power mode example together. Although only one core may be running at the end of the power example, such as with GO_3, both cores need to be enabled and running the power modes example at the start. For the E1 then only the HE core needs to be built and run. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information or, refer to the E1 Datasheet if you are only exercising the RTSS-HE. Currently, the examples are not able to exercise the APSS Cortex-A32 cores or the RTSS Ethos-U55 NPUs. These power modes examples only exercise the RTSS subsystems. Your power results will be the same as those in Figure 1 whether you are using an E3, E5, or E7 processor.
+For Ensemble E3, E5, E7 and E8 these demo applications expect both the HE and the HP cores to be running the same power mode example together. Although only one core may be running at the end of the power example, such as with GO_3, both cores need to be enabled and running the power modes example at the start. For the E1 then only the HE core needs to be built and run. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information or, refer to the E1 Datasheet if you are only exercising the RTSS-HE. Currently, the examples are not able to exercise the APSS Cortex-A32 cores or the RTSS Ethos-U55 NPUs. These power modes examples only exercise the RTSS subsystems. Your power results will be the same as those in Figure 1 whether you are using an E3, E5, or E7 processor. For E8, please refer to the E8 Datasheet Power Modes figure.
 
 Note: When JTAG is active, the WFI/WFE are in no-op, the device will not enter any low power mode. The examples need to be built and run on the board using the MRAM flash instructions using the Security toolkit given in the building section above.
 
-# Running an Example on the Board
+# Running an Example on the Board (E7)
+
+Please feel free to either use a FTDI cable for using the LPUART. In the below example, for E7, a jumper connection has been made from LPUART to USB jumper J26. In E8, a  FTDI cable has been connected to the LPUART directly.
 
 A command line interface has been developed to enable the user to run demo examples for all the power types and their respective modes. The following demonstrates an example of using the CLI and how to choose the power type and mode.
 
-Connect the UART ports P7.6(Rx) and P7.7(Tx) to the UART to USB Jumper J26 as seen in the snapshot below:
+Connect the LPUART ports P9.1(Rx) and P9.2(Tx) to the UART to USB Jumper J26 as seen in the snapshot below:
 
 <figure>
-<img src="images/media/image7.jpeg" style="width:5.83153in;height:3.46154in" alt="A blue electronic board with wires and wires AI-generated content may be incorrect." />
+<img src="images/media/E7image.jpeg" style="width:5.83153in;height:4.46154in" alt="A blue electronic board with wires and wires AI-generated content may be incorrect." />
 <figcaption><p>UART connections</p></figcaption>
 </figure>
 
-| MCU Pin | J15 Pin | J26 Pin |
+| MCU Pin | J14 Pin | J26 Pin |
 |:--------|:--------|:--------|
-| P7.6    | J15.8   | J26.3   |
-| P7.7    | J15.10  | J26.4   |
+| P9.1    | J14.24  | J26.3   |
+| P9.2    | J14.23  | J26.4   |
 
 <figure>
-<img src="images/media/image8.jpeg" style="width:3.02778in;height:2.07361in" alt="A close-up of a circuit board AI-generated content may be incorrect." />
-<figcaption><p>J15 Connections</p></figcaption>
+<img src="images/media/UART-1.jpeg" style="width:3.02778in;height:2.07361in" alt="A close-up of a circuit board AI-generated content may be incorrect." />
+<figcaption><p>J14 Connections</p></figcaption>
 </figure>
 
 <figure>
-<img src="images/media/image9.jpeg" style="width:3.04372in;height:2.29808in" alt="A close-up of a blue circuit board AI-generated content may be incorrect." />
+<img src="images/media/UART-2.jpeg" style="width:3.02778in;height:2.07361in" alt="A close-up of a circuit board AI-generated content may be incorrect." />
 <figcaption><p>J26 Connections</p></figcaption>
 </figure>
+
+# Running an Example on the Board (E8)
+
+Connect the LPUART ports P9.1(Rx) and P9.2(Tx) to a FTDI cable. Set the FTDI cable to 1.8V.
+
+# CLI Application
 
 The CLI application requires a serial communication interface. It is suggested to use tools like Teraterm/Putty. The below instructions demonstrate the setup of Teraterm. Teraterm executable is available for download in the following link.
 
@@ -315,7 +344,7 @@ The maintenance application displays the chosen mode. Yellow and green signify b
 <figcaption><p>Maintenance tool log</p></figcaption>
 </figure>
 
-# Results of Running the Examples on the Board
+# Results of Running the Examples on the Board (E7)
 
 # GO Modes
 
@@ -428,6 +457,127 @@ Figure 29 demonstrates STOP_4 at 1.43uA
 </figure>
 
 The above screenshot demonstrates STOP_5 at 1.26uA
+
+
+# Results of Running the Examples on the Board (E8)
+
+# GO Modes
+
+GO_1 to GO_5 examples in this demo are same as the GO_2 to G0_6 in the E8 datasheet. G0_1 in the E8 datasheet correspond consists of Zaphod integration and it is not demonstrated here.
+
+<figure>
+<img src="images/media/Go1.png" style="width:6.4in;height:3.18974in" />
+<figcaption><p>Screenshot of GO_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_1 at 26.3mA.
+
+<figure>
+<img src="images/media/Go2.png" style="width:6.4in;height:3.18974in" />
+<figcaption><p>Screenshot of GO_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_2 at 21.7mA
+
+<figure>
+<img src="images/media/Go3.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of GO_3</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_3 at 19.5mA
+
+<figure>
+<img src="images/media/Go4.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of GO_4</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_4 at 2.51mA
+
+<figure>
+<img src="images/media/Go5.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of GO_5</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_5 at 849uA
+
+## READY Modes
+
+<figure>
+<img src="images/media/Rdy1.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of READY_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates READY_1 at 12.25mA
+
+<figure>
+<img src="images/media/Rdy2.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of READY_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates READY_2 at 1.4mA
+
+## IDLE Modes
+
+<figure>
+<img src="images/media/Idl1.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of IDLE_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates IDLE_1 at 6.59mA.
+
+<figure>
+<img src="images/media/Idl2.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of IDLE_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates IDLE_2 at 3.02mA.
+
+## STANDBY Modes
+
+<figure>
+<img src="images/media/Stndby.png" style="width:6.5in;height:4.87639in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STANDBY_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STANDBY_1 at 105uA.
+
+## STOP Modes
+
+E8 Devkit has a leakage of 3uA, hence the stop mode measurements show a measurement of 3uA higher than expected.
+<figure>
+<img src="images/media/Stop1.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_1 at 6.7uA
+
+<figure>
+<img src="images/media/Stop2.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_2 at 3.93uA
+
+<figure>
+<img src="images/media/Stop3.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_3</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_3 at 3.89uA
+
+<figure>
+<img src="images/media/Stop4.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_4</p></figcaption>
+</figure>
+
+Figure 29 demonstrates STOP_4 at 3.87uA
+
+<figure>
+<img src="images/media/Stop5.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_5</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_5 at 3.68uA
 
 ##  Restoring the Board From An Illegal Condition
 

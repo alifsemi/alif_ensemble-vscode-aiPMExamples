@@ -33,11 +33,10 @@
 /*******************************************************************************
  *  M A C R O   D E F I N E S
  ******************************************************************************/
-
-#if defined(M55_HP)
+#if defined(M55_HP) || defined(E8_M55_HP)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HP_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_400MHZ
-#elif defined(M55_HE)
+#elif defined(M55_HE) || defined(E8_M55_HE)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HE_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_160MHZ
 #endif
@@ -76,7 +75,7 @@ void execute_ready_mode_usecase(uint32_t mode_number)
 {
     switch(mode_number) {
     case 1:
-#if defined(M55_HE)
+#if (defined(M55_HE) || defined(E8_M55_HE))
         /* go to subsystem off */
         while(1) 
         {
@@ -96,7 +95,7 @@ void execute_ready_mode_usecase(uint32_t mode_number)
 
         break;
     case 2:
-#if defined(M55_HP)
+#if defined(M55_HP) || defined(E8_M55_HP)
         /* go to subsystem off */
         while(1) 
         {
@@ -126,7 +125,8 @@ void configure_ready_mode_profiles(uint32_t mode_number,
 {
     runp->aon_clk_src = CLK_SRC_LFXO;
     /* uses STDBY CLK in active mode when PFM is forced */
-    runp->dcdc_mode = DCDC_MODE_PFM_FORCED;
+    //runp->dcdc_mode = DCDC_MODE_PFM_FORCED;
+    runp->dcdc_mode = DCDC_MODE_PWM;
     runp->dcdc_voltage = 825;
     runp->vdd_ioflex_3V3 = IOFLEX_LEVEL_1V8;
     runp->phy_pwr_gating = 0;
@@ -194,6 +194,8 @@ uint32_t exercise_aipm_ready_modes(char *p_test_name,
 
   configure_ready_mode_profiles(power_mode, &runp, &offp);
 
+  *(volatile uint32_t*)0x1A010400 = 0;// Switching the systop in host register off
+
   msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
 
   TEST_print(services_handle,
@@ -203,10 +205,19 @@ uint32_t exercise_aipm_ready_modes(char *p_test_name,
 
   msg_status = SERVICES_set_off_cfg(services_handle, &offp, &service_resp);
 
-  SERVICES_wait_ms(1500);
-
   TEST_print(services_handle,
               "SERVICES_set_off_cfg() error_code=%s service_resp=0x%08X\n",
+              SERVICES_error_to_string(msg_status),
+              service_resp);
+
+  SERVICES_wait_ms(1500);
+
+  runp.dcdc_mode = DCDC_MODE_PFM_FORCED;
+
+  msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
+
+  TEST_print(services_handle,
+              "SERVICES_set_run_cfg() error_code=%s service_resp=0x%08X\n",
               SERVICES_error_to_string(msg_status),
               service_resp);
 
@@ -223,12 +234,12 @@ uint32_t exercise_aipm_ready_modes(char *p_test_name,
                           /*uint32_t value*/    aclk_div,
                                                 &service_resp);
 
-#if defined(M55_HE)
+#if defined(M55_HE) || defined(E8_M55_HE)
   /* Allow HP core to finish running before powering down the SE */
   SERVICES_wait_ms(1500);
 
   /* Request to power off the Secure Enclave subsystem */
-  msg_status = SERVICES_power_se_sleep_req(services_handle, 0, &service_resp);
+   msg_status = SERVICES_power_se_sleep_req(services_handle, 0, &service_resp);
 
 #endif
 

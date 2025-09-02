@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/tools/projmgr/2.6.0/tools/projmgr/schemas/cproject.schema.json
+project:
+  groups:
+    - group: HE_app
+      files:
+        - file: ../common/services_aipm_go_modes.c
+        - file: ../common/services_aipm_idle_modes.c
+        - file: ../common/services_aipm_ready_modes.c
+        - file: ../common/services_aipm_standby_modes.c
+        - file: ../common/services_aipm_stop_modes.c
+        - file: m55_he_services_main.c
+        - file: ../common/debug_clks.c
+        - file: ../common/debug_pwr.c
+
+  output:
+    base-name: $Project$
+    type:
+      - elf
+      - bin
+
+  add-path:
+    - ../common/
+
+  define:
+    - TX_TIMER_PROCESS_IN_ISR
+
+  layers:
+    - layer: ../device/ensemble/alif-ensemble.clayer.yml
+
+  linker:
+    - regions: "../device/ensemble/RTE/Device/$Dname$_$Pname$/app_mem_regions.h"
+    - script: "../device/ensemble/RTE/Device/$Dname$_$Pname$/linker_gnu_tcm.ld.src"
+
+  packs:
+    - pack: AlifSemiconductor::Ensemble@2.0.2
+    - pack: ARM::CMSIS-Compiler@2.0.0
+    - pack: ARM::CMSIS-Compiler@2.1.0
+  components:
+    - component: AlifSemiconductor::Services:Retarget IO:STDOUT
+    - component: ARM::CMSIS-Compiler:CORE@1.1.0
+    - component: AlifSemiconductor::Services:Retarget IO:STDIN
+    - component: ARM::CMSIS-Compiler:STDIN:Custom@1.0.0
+    - component: ARM::CMSIS-Compiler:STDOUT:Custom@1.0.0

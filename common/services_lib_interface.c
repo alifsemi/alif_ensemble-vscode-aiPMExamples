@@ -23,7 +23,7 @@
 #include <ctype.h>
 #include "services_lib_interface.h"
 #include "services_lib_protocol.h"
-#include "system_utils.h"
+#include "sys_utils.h"
 #include "mhu.h"
 
 /*******************************************************************************
@@ -60,6 +60,7 @@ debug_print_function_t drv_debug_print_fn;
  */
 int32_t SERVICES_wait_ms(uint32_t wait_time_ms)
 {
+  sys_busy_loop_init();
   while(wait_time_ms--) {
     sys_busy_loop_us(1000);
   }

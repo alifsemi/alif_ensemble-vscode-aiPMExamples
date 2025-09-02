@@ -161,6 +161,7 @@ uint32_t exercise_aipm_idle_modes(char *p_test_name,
 
   configure_idle_mode_profiles(power_mode, &runp, &offp);
 
+    *(volatile uint32_t*)0x1A010400 = 0;
   msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
 
   TEST_print(services_handle,
@@ -175,7 +176,8 @@ uint32_t exercise_aipm_idle_modes(char *p_test_name,
               SERVICES_error_to_string(msg_status),
               service_resp);
 
-#if defined(M55_HE) 
+
+#if defined(M55_HE) || defined(E8_M55_HE)
   if (power_mode == 2)
   {
     /* Allow HP core to finish running before next steps */
@@ -193,6 +195,7 @@ uint32_t exercise_aipm_idle_modes(char *p_test_name,
   }
 
 #endif
+
 
   execute_idle_mode_usecase(power_mode);
 

@@ -34,12 +34,12 @@
  *  M A C R O   D E F I N E S
  ******************************************************************************/
 
-#if defined(M55_HP)
+#if defined(M55_HP) || defined(E8_M55_HP)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HP_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_400MHZ
-#elif defined(M55_HE)
+#elif defined(M55_HE) || defined(E8_M55_HE)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HE_MASK
-#define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_76_8_RC_MHZ
+#define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_160MHZ
 #endif
 
 /*
@@ -142,6 +142,7 @@ uint32_t exercise_aipm_standby_modes(char *p_test_name,
 
   configure_standby_mode_profiles(power_mode, &runp, &offp);
 
+  *(volatile uint32_t*)0x1A010400 = 0; // Switching the systop in host register off
   msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
 
   TEST_print(services_handle,
@@ -168,10 +169,23 @@ uint32_t exercise_aipm_standby_modes(char *p_test_name,
   *((volatile uint32_t *)0x1A60A03C) &= ~(1U << 5);
 #endif
 
+#if defined(E8_M55_HE)
+
+  /* Allow HP core to finish running before powering down the SE */
+  SERVICES_wait_ms(1500);
+
+  /* Request to power off the Secure Enclave subsystem */
+  msg_status = SERVICES_power_se_sleep_req(services_handle, 0, &service_resp);
+
+  SERVICES_wait_ms(50);
+  /* Disable the MRAM LDO */
+  *((volatile uint32_t *)0x1A60A03C) &= ~(1U << 5);
+#endif
   execute_standby_mode_usecase(power_mode);
 
   return msg_status;
 }
+
 
 /**
 * @fn    void SERVICES_test(uint32_t services_handle)
