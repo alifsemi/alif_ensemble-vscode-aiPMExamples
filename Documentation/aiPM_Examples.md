@@ -543,7 +543,7 @@ The above screenshot demonstrates STANDBY_1 at 105uA.
 
 ## STOP Modes
 
-E8 Devkit has a leakage of 3uA, hence the stop mode measurements show a measurement of 3uA higher than expected.
+The current version of socketed E8 Devkit has a leakage of 3uA, hence the stop mode measurements in the snapshots below show a measurement of 3uA higher than expected. This will be fixed in the upcoming version of devkit.
 <figure>
 <img src="images/media/Stop1.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
 <figcaption><p>Screenshot of STOP_1</p></figcaption>
