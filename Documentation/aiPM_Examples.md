@@ -8,7 +8,7 @@ Application Note
 
 **Power Modes**
 
-**Version 1.4**
+**Version 1.5**
 
 
 # Introduction
