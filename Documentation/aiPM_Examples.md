@@ -39,9 +39,9 @@ Power measurements can be made using any equipment of your choice. If a recommen
 
 Download the following packages to begin evaluating the Ensemble Power Modes example software.
 
-- app-release-exec-\<os\>-SE_FW_1.103.001, or later (\<os\> supported: windows, linux, macos)
+- app-release-exec-\<os\>-SE_FW_1.107.000, or later (\<os\> supported: windows, linux, macos)
 
-- se-host-services-release-SE_FW_1.103.001, or later
+- se-host-services-release-SE_FW_1.107.000, or later
 
 ## Evaluation Board Setup
 
@@ -690,3 +690,4 @@ All other product or service names are the property of their respective owners.
 | 1.2 | Modified the document to accommodate multi-core building using VSCode. Added the instructions to use the CLI. Eliminated the manual building and cmake related commands since it is no longer applicable. |
 | 1.3 | Removed the incorrect git project hyperlink |
 | 1.4 | Rewrote sections on returning to the initial demo program state and restoring a board with a hung application |
+| 1.5 | Changed the app note to support E8 and E7 using SE 107.00 and CMSIS DFP 2.0.2 |
