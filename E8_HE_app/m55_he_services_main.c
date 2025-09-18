@@ -25,6 +25,7 @@
 #include "RTE_Components.h"
 #include "power_modes.h"
 #include <se_services_port.h>
+#include <retarget_init.h>
 
 #if defined(RTE_CMSIS_Compiler_STDIN_Custom)
 #include "retarget_stdin.h"
