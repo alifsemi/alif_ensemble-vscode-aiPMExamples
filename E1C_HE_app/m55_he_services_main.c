@@ -245,8 +245,8 @@ int main(void)
   printf("\r\nSelected Power mode type is %s_%d\n", powermodes[power_type_input-1],power_mode_input);
 
   #if defined(E1C_M55_HE)
-    power_type = GOMODE;
-    power_mode_input=1;
+    power_type = powermodes[power_type_input-1];
+    //power_mode_input=1;
   #else
   while(1)
   {
