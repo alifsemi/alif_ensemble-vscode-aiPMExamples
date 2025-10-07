@@ -180,6 +180,7 @@ static uint32_t validate_power_mode(uint32_t power_type_input)
 int main(void)
 {
   POWER_MODE_TYPE power_type = GOMODE;
+  uint32_t final_power_type = 0;
   char *powermodes[]={"GO_MODE","READY_MODE","IDLE_MODE","STANDBY_MODE","STOP_MODE"};
   int32_t ret=-1;
   uint32_t power_type_input=0;
@@ -230,6 +231,7 @@ int main(void)
          break;
      }
   }
+  final_power_type = power_type_input;
   printf("\r\nSelected Power mode type is %s\n", powermodes[power_type_input-1]);
   printf("\r\n=========================================================\r\n");
   printf("\r\nSelect the Power mode from the following list below: ");
@@ -245,8 +247,7 @@ int main(void)
   printf("\r\nSelected Power mode type is %s_%d\n", powermodes[power_type_input-1],power_mode_input);
 
   #if defined(E1C_M55_HE)
-    power_type = powermodes[power_type_input-1];
-    //power_mode_input=1;
+    power_type = final_power_type;
   #else
   while(1)
   {
