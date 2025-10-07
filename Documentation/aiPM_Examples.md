@@ -846,3 +846,4 @@ All other product or service names are the property of their respective owners.
 | 1.3 | Removed the incorrect git project hyperlink |
 | 1.4 | Rewrote sections on returning to the initial demo program state and restoring a board with a hung application |
 | 1.5 | Changed the app note to support E8 and E7 using SE 107.00 and CMSIS DFP 2.0.2 |
+| 1.6 | Added the E1C demo support |
