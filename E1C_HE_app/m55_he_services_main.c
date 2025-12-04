@@ -39,13 +39,10 @@
  *  M A C R O   D E F I N E S
  ******************************************************************************/
 
-#if defined(M55_HE)
+#if defined(E1C_M55_HE)
 #define CPU_STRING "M55_HE"
 #include "core_defines.h"
-#elif defined(M55_HP)
-#define CPU_STRING "M55_HP"
-#include "core_defines.h"
-#else
+#elif
 #define CPU_STRING "<unknown>"
 #endif
 
@@ -183,6 +180,7 @@ static uint32_t validate_power_mode(uint32_t power_type_input)
 int main(void)
 {
   POWER_MODE_TYPE power_type = GOMODE;
+  uint32_t final_power_type = 0;
   char *powermodes[]={"GO_MODE","READY_MODE","IDLE_MODE","STANDBY_MODE","STOP_MODE"};
   int32_t ret=-1;
   uint32_t power_type_input=0;
@@ -233,6 +231,7 @@ int main(void)
          break;
      }
   }
+  final_power_type = power_type_input;
   printf("\r\nSelected Power mode type is %s\n", powermodes[power_type_input-1]);
   printf("\r\n=========================================================\r\n");
   printf("\r\nSelect the Power mode from the following list below: ");
@@ -246,6 +245,10 @@ int main(void)
   }
   printf("\n");
   printf("\r\nSelected Power mode type is %s_%d\n", powermodes[power_type_input-1],power_mode_input);
+
+  #if defined(E1C_M55_HE)
+    power_type = final_power_type;
+  #else
   while(1)
   {
     if(((bk_ram_wr(&power_type_input,POWER_TYPE_OFFSET))!= -1) &&  (bk_ram_wr(&power_mode_input,POWER_MODE_OFFSET)!= -1))
@@ -262,6 +265,7 @@ int main(void)
     break;
   }
 
+  #endif
   switch(power_type)
   {
         case GOMODE: 

@@ -34,8 +34,9 @@ solution:
       device: Alif Semiconductor::AE1C1F4051920PH:M55_HE
       board: Alif Semiconductor::DevKit-E1C
       define:
+        - "ENSEMBLE_SOC_E1C"
         - "CORE_M55_HE"
-        - "M55-HE"
+        - "E1C_M55_HE"
 
     - type: E8-HE
       device: Alif Semiconductor::AE822FA0E5597LS0:M55_HE
@@ -75,4 +76,6 @@ solution:
       for-context: +E7-HP
     - project: E8_HP_app/E8-HP_app.cproject.yml
       for-context: +E8-HP
+    - project: E1C_HE_app/E1C-HE_app.cproject.yml
+      for-context: +E1C-HE
 

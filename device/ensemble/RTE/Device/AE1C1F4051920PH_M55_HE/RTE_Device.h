@@ -2086,7 +2086,7 @@
 //    <1=> ENABLE
 // <i> Defines Blocking mode support for LPUART
 // <i> Default: DISABLE
-#define RTE_LPUART_BLOCKING_MODE_ENABLE 0
+#define RTE_LPUART_BLOCKING_MODE_ENABLE 1
 
 #endif  // RTE_LPUART
 

@@ -177,7 +177,7 @@ uint32_t exercise_aipm_idle_modes(char *p_test_name,
               service_resp);
 
 
-#if defined(M55_HE) || defined(E8_M55_HE)
+#if defined(M55_HE) || defined(E8_M55_HE) || defined(E1C_M55_HE)
   if (power_mode == 2)
   {
     /* Allow HP core to finish running before next steps */

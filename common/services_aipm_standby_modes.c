@@ -37,7 +37,7 @@
 #if defined(M55_HP) || defined(E8_M55_HP)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HP_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_400MHZ
-#elif defined(M55_HE) || defined(E8_M55_HE)
+#elif defined(M55_HE) || defined(E8_M55_HE) || defined(E1C_M55_HE)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HE_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_160MHZ
 #endif
@@ -157,7 +157,7 @@ uint32_t exercise_aipm_standby_modes(char *p_test_name,
               SERVICES_error_to_string(msg_status),
               service_resp);
 
-#if defined(M55_HE)
+#if defined(M55_HE) || defined(E1C_M55_HE)
   /* Allow HP core to finish running before powering down the SE */
   SERVICES_wait_ms(1500);
 

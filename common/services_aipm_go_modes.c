@@ -37,7 +37,7 @@
 #if defined(M55_HP) || defined(E8_M55_HP)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HP_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_400MHZ
-#elif defined(M55_HE) || defined(E8_M55_HE)
+#elif defined(M55_HE) || defined(E8_M55_HE) || defined(E1C_M55_HE)
 #define PD_RTSS_LOCAL_MASK          PD_RTSS_HE_MASK
 #define CLOCK_FREQUENCY_CPU         CLOCK_FREQUENCY_160MHZ
 #endif
@@ -86,7 +86,7 @@ void execute_go_mode_usecase(uint32_t mode_number)
 
         break;
     case 3:
-#if defined(M55_HE) || defined(E8_M55_HE)
+#if defined(M55_HE) || defined(E8_M55_HE) || defined(E1C_M55_HE)
         /* go to subsystem off */
         while(1) 
         {
@@ -152,8 +152,13 @@ void configure_go_mode_profiles(uint32_t mode_number,
         runp->run_clk_src = CLK_SRC_PLL;
         runp->dcdc_voltage = 825;
         offp->stby_clk_src  = CLK_SRC_HFXO;
+        #if defined(E1C_M55_HE)
+        runp->memory_blocks = SRAM2_MASK | SRAM3_MASK | MRAM_MASK;
+        offp->memory_blocks = SRAM2_MASK | SRAM3_MASK | MRAM_MASK;
+        #else
         runp->memory_blocks = SRAM0_MASK | SRAM1_MASK | MRAM_MASK;
         offp->memory_blocks = SRAM0_MASK | SRAM1_MASK | MRAM_MASK;
+        #endif
         runp->power_domains = PD_SYST_MASK | PD_SESS_MASK;
         offp->power_domains = PD_SYST_MASK | PD_SESS_MASK;
         break;
@@ -163,8 +168,13 @@ void configure_go_mode_profiles(uint32_t mode_number,
         runp->run_clk_src = CLK_SRC_PLL;
         runp->dcdc_voltage = 825;
         offp->stby_clk_src  = CLK_SRC_HFXO;
+        #if defined(E1C_M55_HE)
+        runp->memory_blocks = SRAM2_MASK | SRAM3_MASK | MRAM_MASK;
+        offp->memory_blocks = SRAM2_MASK | SRAM3_MASK | MRAM_MASK;
+        #else
         runp->memory_blocks = SRAM0_MASK | SRAM1_MASK | MRAM_MASK;
         offp->memory_blocks = SRAM0_MASK | SRAM1_MASK | MRAM_MASK;
+        #endif
         runp->power_domains = PD_SYST_MASK | PD_SESS_MASK;
         offp->power_domains = PD_SYST_MASK | PD_SESS_MASK;
         break;
@@ -287,7 +297,7 @@ if (power_mode < 4)
                                                 &service_resp);
 }
 
-#if defined(M55_HE) || defined(E8_M55_HE)
+#if defined(M55_HE) || defined(E8_M55_HE) || defined(E1C_M55_HE)
   if (power_mode > 3) {
     /* Allow HP core to finish running before powering down the SE */
     SERVICES_wait_ms(1500);

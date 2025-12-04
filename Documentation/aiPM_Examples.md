@@ -8,7 +8,7 @@ Application Note
 
 **Power Modes**
 
-**Version 1.5**
+**Version 1.6**
 
 
 # Introduction
@@ -31,7 +31,7 @@ The Hardware Reference Manual (HWRM) describes all technical features of the Ens
 
 ## Equipment
 
-Alif Ensemble development kit (DevKit), such as the DK-E7 or DK-E8. When loading the examples in this application note onto the board, there is no code loaded for the A32 cores, so they are off by default.
+Alif Ensemble development kit (DevKit), such as the DK-E7, DK-E8 or DK-E1C/B1. When loading the examples in this application note onto the board, there is no code loaded for the A32 cores, so they are off by default.
 
 Power measurements can be made using any equipment of your choice. If a recommendation is needed, please see the Joulescope JS220 ([www.joulescope.com](http://www.joulescope.com)). Its software is supported on Windows, macOS, and Ubuntu 22.04 LTS.
 
@@ -80,6 +80,18 @@ Prior to hardware revision D of the DevKit (the revision is visible on the back 
 - SYST_ACLK: P0_3 mode 6, P10_3 mode 7 (enable in CAMERA_PIXCLK_CTRL register)
 
 - RTSS_HE_CLK: P0_3 mode 5, P1_3 mode 5, P10_3 mode 5 (HE_CAMERA_PIXCLK register)
+
+
+### Connections between Joulescope and DevKit E1C/B1
+
+- Remove shunt on JP3, this disconnects the “SOC_PWR” supply.
+
+- Attach Joulescope Current+ terminal to pin 3 of JP3 and Current- terminal to pin 2 of JP3
+
+- Attach Joulescope Voltage- terminal to pin 1 of J9, J10, J11, or J14 (GND) 
+
+- Attach Joulescope Voltage+ terminal to pin 6 of J9, J10, or J11 (1.8V supply) 
+
 
 # CPU Power States
 
@@ -148,6 +160,19 @@ This dynamic-off feature is for applications running on the RTSS-HP or RTSS-HE t
 <figcaption><p>Datasheet Power Modes from Ensemble E8 Datasheet-2</p></figcaption>
 </figure>
 
+## E1C/B1 Series MCU Datasheet Power Modes
+
+<figure>
+<img src="images/media/E1C_table-1.png" style="width:6.5in;height:3.41271in" />
+<figcaption><p>Datasheet Power Modes from Ensemble E8 Datasheet-1</p></figcaption>
+</figure>
+
+<figure>
+<img src="images/media/E1C_table-2.png" style="width:6.5in;height:4.41271in" />
+<figcaption><p>Datasheet Power Modes from Ensemble E8 Datasheet-2</p></figcaption>
+</figure>
+
+
 
 ## MCU GO/READY/IDLE Modes
 
@@ -158,6 +183,8 @@ Additionally, the examples use a while (1) loop instead of CoreMark to load the 
 You may run these examples on an E3, E5, E7 device, but you’ll only replicate the power numbers equivalent to an E3 device. Refer to Figure 4 Datasheet Power Modes from Ensemble E3 Datasheet for more information. Refer to the E1, E5, or E7 datasheet for more device specific power modes estimates.
 
 For E8 power estimates, please refer to E8 Datasheet power modes snapshot.
+
+For E1C/B1 power estimates, refer to E1C/B1 Datasheet power modes snapshot.
 
 These examples demonstrate just a sample of the possible power modes and configurations that the Ensemble processor may be in. The significant changes to note between the power modes are as follows:
 
@@ -251,9 +278,13 @@ The program builds and generates the binaries and elf file for HE and HP applica
 Press F1 and in Run Tasks choose *Program with Security Toolkit* *(multicore)* based on the version being built. (E7 or E8). Please refer to the snapshot below.
 
 <figure>
-<img src="images/media/image35.png" style="width:6.5in;height:3.47222in" alt="A screenshot of a computer program Description automatically generated" />
+<img src="images/media/image35.png" style="width:6.5in;height:2.47222in" alt="A screenshot of a computer program Description automatically generated" />
 <figcaption><p>VSCode programming the board</p></figcaption>
 </figure>
+
+For E1C/B1 , please use the CMSIS view to build the project using the build icon. 
+
+Press F1 and in Run Tasks choose *Program with Security Toolkit* to flash the software on the board.
 
 # Notes Before Running an Example on the DevKit
 
@@ -294,6 +325,10 @@ Connect the LPUART ports P9.1(Rx) and P9.2(Tx) to the UART to USB Jumper J26 as 
 # Running an Example on the Board (E8)
 
 Connect the LPUART ports P9.1(Rx) and P9.2(Tx) to a FTDI cable. Set the FTDI cable to 1.8V.
+
+# Running an Example on the Board (E1C/B1)
+
+After flashing the software on the board, set the UART jumper to LP and open Teraterm to connect to the CLI.
 
 # CLI Application
 
@@ -579,6 +614,126 @@ Figure 29 demonstrates STOP_4 at 3.87uA
 
 The above screenshot demonstrates STOP_5 at 3.68uA
 
+
+# Results of Running the Examples on the Board (E1C/B1)
+
+# GO Modes
+
+
+<figure>
+<img src="images/media/E1C-B1/GO1.png" style="width:6.4in;height:3.18974in" />
+<figcaption><p>Screenshot of GO_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_1 at 13.7mA.
+
+<figure>
+<img src="images/media/E1C-B1/GO2.png" style="width:6.4in;height:3.18974in" />
+<figcaption><p>Screenshot of GO_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_2 at 12.03mA
+
+<figure>
+<img src="images/media/E1C-B1/GO3.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of GO_3</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_3 at 5.26mA
+
+<figure>
+<img src="images/media/E1C-B1/GO4.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of GO_4</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_4 at 3.85mA
+
+<figure>
+<img src="images/media/E1C-B1/GO5.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of GO_5</p></figcaption>
+</figure>
+
+The above screenshot demonstrates GO_5 at 1.24uA
+
+## READY Modes
+
+<figure>
+<img src="images/media/E1C-B1/RDY1.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of READY_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates READY_1 at 4.91mA
+
+<figure>
+<img src="images/media/E1C-B1/RDY2.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of READY_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates READY_2 at 2.08mA
+
+## IDLE Modes
+
+<figure>
+<img src="images/media/E1C-B1/IDL1.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of IDLE_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates IDLE_1 at 4.44mA.
+
+<figure>
+<img src="images/media/E1C-B1/IDL1.png" style="width:6.5in;height:3.47778in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of IDLE_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates IDLE_2 at 0.527mA.
+
+## STANDBY Modes
+
+<figure>
+<img src="images/media/E1C-B1/STANDBY.png" style="width:6.5in;height:4.87639in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STANDBY_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STANDBY_1 at 65.39uA.
+
+## STOP Modes
+
+The current A5 version of chip has a leakage and the Stop mode current is seen very high. This will be fixed in later version of the chip.
+
+<img src="images/media/E1C-B1/STOP1.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_1</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_1 at 16.4uA
+
+<figure>
+<img src="images/media/E1C-B1/STOP2.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_2</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_2 at 14.9uA
+
+<figure>
+<img src="images/media/E1C-B1/STOP3.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_3</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_3 at 14.88uA
+
+<figure>
+<img src="images/media/E1C-B1/STOP4.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_4</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_4 at 14.83uA
+
+<figure>
+<img src="images/media/E1C-B1/STOP5.png" style="width:6.5in;height:3.47708in" alt="A screenshot of a computer Description automatically generated" />
+<figcaption><p>Screenshot of STOP_5</p></figcaption>
+</figure>
+
+The above screenshot demonstrates STOP_5 at 14.72uA
+
 ##  Restoring the Board From An Illegal Condition
 
 The example applications in this repo are designed so that after entering a selected power mode and taking the measurements, user can return to the initial state where the CLI is looking for a selection of power mode, just press the RESET button.
@@ -691,3 +846,4 @@ All other product or service names are the property of their respective owners.
 | 1.3 | Removed the incorrect git project hyperlink |
 | 1.4 | Rewrote sections on returning to the initial demo program state and restoring a board with a hung application |
 | 1.5 | Changed the app note to support E8 and E7 using SE 107.00 and CMSIS DFP 2.0.2 |
+| 1.6 | Added the E1C demo support |
