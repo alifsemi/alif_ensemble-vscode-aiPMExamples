@@ -113,7 +113,7 @@ void configure_idle_mode_profiles(uint32_t mode_number,
         runp->aon_clk_src       = CLK_SRC_LFXO;
         runp->memory_blocks     = 0;
         runp->power_domains     = PD_SYST_MASK;
-        runp->dcdc_mode         = DCDC_MODE_PFM_FORCED;
+        runp->dcdc_mode         = DCDC_MODE_PWM;
         runp->dcdc_voltage      = DCDC_VOUT_0825;
         runp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
 
@@ -124,7 +124,7 @@ void configure_idle_mode_profiles(uint32_t mode_number,
         offp->stby_clk_freq     = SCALED_FREQ_RC_STDBY_0_6_MHZ;
         offp->memory_blocks     = BACKUP4K_MASK | SRAM5_1_MASK | SRAM5_2_MASK ;
         offp->power_domains     = PD_SYST_MASK;
-        offp->dcdc_mode         = DCDC_MODE_PFM_FORCED;
+        offp->dcdc_mode         = DCDC_MODE_PWM;
         offp->dcdc_voltage      = DCDC_VOUT_0825;
         offp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
         offp->vtor_address      = SCB->VTOR;
@@ -161,8 +161,8 @@ uint32_t exercise_aipm_idle_modes(char *p_test_name,
 
   configure_idle_mode_profiles(power_mode, &runp, &offp);
 
-    *(volatile uint32_t*)0x1A010400 = 0;
   msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
+  *(volatile uint32_t*)0x1A010400 = 0;
 
   TEST_print(services_handle,
               "SERVICES_set_run_cfg() error_code=%s service_resp=0x%08X\n",
@@ -183,7 +183,8 @@ uint32_t exercise_aipm_idle_modes(char *p_test_name,
     /* Allow HP core to finish running before next steps */
      SERVICES_wait_ms(1500);
 
-     runp.scaled_clk_freq   = SCALED_FREQ_RC_ACTIVE_0_6_MHZ;
+     runp.dcdc_mode = DCDC_MODE_PFM_FORCED;
+     runp.scaled_clk_freq = SCALED_FREQ_RC_ACTIVE_0_6_MHZ;
 
      msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
 

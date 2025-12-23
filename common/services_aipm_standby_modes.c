@@ -98,8 +98,8 @@ void configure_standby_mode_profiles(uint32_t mode_number,
     runp->aon_clk_src       = CLK_SRC_LFXO;
     runp->memory_blocks     = 0;
     runp->power_domains     = PD_SSE700_AON_MASK;
-    runp->dcdc_mode         = DCDC_MODE_PFM_FORCED;
-    runp->dcdc_voltage      = 760;
+    runp->dcdc_mode         = DCDC_MODE_PWM;
+    runp->dcdc_voltage      = DCDC_VOUT_0825;
     runp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
 
     offp->wakeup_events     = 0;
@@ -110,8 +110,8 @@ void configure_standby_mode_profiles(uint32_t mode_number,
     offp->stby_clk_freq     = SCALED_FREQ_RC_STDBY_0_6_MHZ;
     offp->memory_blocks     = SRAM4_1_MASK | SRAM4_2_MASK | SRAM5_1_MASK | SRAM5_2_MASK | SERAM_MASK;
     offp->power_domains     = PD_SSE700_AON_MASK;
-    offp->dcdc_mode         = DCDC_MODE_PFM_FORCED;
-    offp->dcdc_voltage      = 760;
+    offp->dcdc_mode         = DCDC_MODE_PWM;
+    offp->dcdc_voltage      = DCDC_VOUT_0825;
     offp->vdd_ioflex_3V3    = IOFLEX_LEVEL_1V8;
     offp->vtor_address      = SCB->VTOR;
     offp->vtor_address_ns   = SCB->VTOR;
@@ -157,30 +157,24 @@ uint32_t exercise_aipm_standby_modes(char *p_test_name,
               SERVICES_error_to_string(msg_status),
               service_resp);
 
-#if defined(M55_HE) || defined(E1C_M55_HE)
+#if defined(M55_HE) || defined(E1C_M55_HE) || defined(E8_M55_HE)
   /* Allow HP core to finish running before powering down the SE */
   SERVICES_wait_ms(1500);
+
+  runp.dcdc_voltage = 760;
+  runp.dcdc_mode = DCDC_MODE_PFM_FORCED;
+  msg_status = SERVICES_set_run_cfg(services_handle, &runp, &service_resp);
+  SERVICES_wait_ms(50);
 
   /* Request to power off the Secure Enclave subsystem */
   msg_status = SERVICES_power_se_sleep_req(services_handle, 0, &service_resp);
 
   SERVICES_wait_ms(50);
+
   /* Disable the MRAM LDO */
   *((volatile uint32_t *)0x1A60A03C) &= ~(1U << 5);
 #endif
 
-#if defined(E8_M55_HE)
-
-  /* Allow HP core to finish running before powering down the SE */
-  SERVICES_wait_ms(1500);
-
-  /* Request to power off the Secure Enclave subsystem */
-  msg_status = SERVICES_power_se_sleep_req(services_handle, 0, &service_resp);
-
-  SERVICES_wait_ms(50);
-  /* Disable the MRAM LDO */
-  *((volatile uint32_t *)0x1A60A03C) &= ~(1U << 5);
-#endif
   execute_standby_mode_usecase(power_mode);
 
   return msg_status;
