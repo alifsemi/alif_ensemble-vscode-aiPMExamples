@@ -230,9 +230,9 @@ Install VSCode with CMSIS extension version v1.38.0 and clone the aiPM project w
 
 git clone https://github.com/alifsemi/alif_ensemble-vscode-aiPMExamples.git
 
-cd [ensemble_vscode_aiPMExamples_DEV](https://github.com/AlifSemiDev/ensemble_vscode_aiPMExamples_DEV/tree/Incorporate_review_comments)
+cd alif-github/alif_ensemble-vscode-aiPMExamples
 
-git submodule update –init
+git submodule update --init
 
 Open the project in VSCode. This project supports multicore compilation and programming. Follow the instructions below to build the project and program the board with the software.
 
