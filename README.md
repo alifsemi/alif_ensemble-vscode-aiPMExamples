@@ -1,4 +1,12 @@
 
+> [!NOTE]
+> # This repository is deprecated for now and made private until it is fixed.
+
+<br>
+
+----
+
+
 # Alif Semiconductor aiPM Application Samples
 
 # Introduction
