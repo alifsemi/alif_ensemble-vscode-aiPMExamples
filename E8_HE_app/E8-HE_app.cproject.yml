@@ -32,12 +32,11 @@ project:
     - script: "../device/ensemble/RTE/Device/$Dname$_$Pname$/linker_gnu_tcm.ld.src"
 
   packs:
-    - pack: AlifSemiconductor::Ensemble@2.0.2
-    - pack: ARM::CMSIS-Compiler@2.0.0
-    - pack: ARM::CMSIS-Compiler@2.1.0
+    - pack: ARM::CMSIS-Compiler
+
   components:
     - component: AlifSemiconductor::Services:Retarget IO:STDOUT
-    - component: ARM::CMSIS-Compiler:CORE@1.1.0
     - component: AlifSemiconductor::Services:Retarget IO:STDIN
-    - component: ARM::CMSIS-Compiler:STDIN:Custom@1.0.0
-    - component: ARM::CMSIS-Compiler:STDOUT:Custom@1.0.0
+    - component: CMSIS-Compiler:CORE
+    - component: CMSIS-Compiler:STDIN:Custom
+    - component: CMSIS-Compiler:STDOUT:Custom

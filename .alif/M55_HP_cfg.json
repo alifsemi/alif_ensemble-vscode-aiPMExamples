@@ -5,12 +5,13 @@
     "version" : "0.5.00",
     "signed": true
   },
-  "USER_APP": {
+ "USER_APP": {
     "binary": "alif-img.bin",
     "mramAddress": "0x80200000",
+    "loadAddress": "0x50000000",
     "version": "1.0.0",
     "cpu_id": "M55_HP",
-    "flags": ["boot"],
+    "flags": ["load", "boot"],
     "signed": false
   }
 }
