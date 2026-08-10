@@ -8,6 +8,7 @@ project:
         - file: ../common/services_aipm_ready_modes.c
         - file: ../common/services_aipm_standby_modes.c
         - file: ../common/services_aipm_stop_modes.c
+        - file: ../common/services_lib_interface.c
         - file: m55_he_services_main.c
         - file: ../common/debug_clks.c
         - file: ../common/debug_pwr.c
