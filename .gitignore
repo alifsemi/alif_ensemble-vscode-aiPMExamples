@@ -4,3 +4,8 @@ tmp/
 !alif.cbuild-pack.yml
 *.cprj
 *.clangd
+.clang-format
+.cortex-debug.registers.state.json
+c_cpp_properties.json
+cmsis.json
+settings.json
