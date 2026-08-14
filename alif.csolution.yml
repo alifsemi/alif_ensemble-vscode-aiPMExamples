@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/tools/projmgr/2.6.0/tools/projmgr/schemas/csolution.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Open-CMSIS-Pack/devtools/tools/projmgr/2.12.0/tools/projmgr/schemas/csolution.schema.json
 solution:
   created-for: CMSIS-Toolbox@2.12.0
   cdefault:
@@ -38,7 +38,7 @@ solution:
             - project-context: E7-HP_app.debug
 
     - type: E1C-HE
-      device: Alif Semiconductor::AE1C1F4051920PH:M55_HE
+      device: Alif Semiconductor::AE1C1F4051920PH0:M55_HE
       board: Alif Semiconductor::DevKit-E1C
       define:
         - "ENSEMBLE_SOC_E1C"

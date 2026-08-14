@@ -24,7 +24,6 @@
 #include "RTE_Components.h"
 #include "power_modes.h"
 #include <se_services_port.h>
-#include <retarget_init.h>
 
 /*******************************************************************************
  *  M A C R O   D E F I N E S
@@ -87,9 +86,9 @@ int main(void)
   uint32_t hp_start_flag=0;
   char *powermodes[]={"GO_MODE","READY_MODE","IDLE_MODE","STANDBY_MODE","STOP_MODE"};
   POWER_MODE_TYPE power_type = GOMODE;
-  SERVICES_print("[SE SERVICES] %s Test harness - STARTS\n", CPU_STRING);
 
   se_services_port_init();
+  SERVICES_print("[SE SERVICES] %s Test harness - STARTS\n", CPU_STRING);
 
   while(1)
   {

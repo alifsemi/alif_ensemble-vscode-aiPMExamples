@@ -27,14 +27,10 @@ project:
 
   layers:
     - layer: ../device/ensemble/alif-ensemble.clayer.yml
-  
+
   linker:
     - regions: "../device/ensemble/RTE/Device/$Dname$_$Pname$/app_mem_regions.h"
     - script: "../device/ensemble/RTE/Device/$Dname$_$Pname$/linker_gnu_tcm.ld.src"
 
   packs:
     - pack: ARM::CMSIS-Compiler
-
-  components:
-    - component: AlifSemiconductor::Services:Retarget IO:STDOUT
-    - component: AlifSemiconductor::Services:Retarget IO:STDIN

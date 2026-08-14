@@ -24,7 +24,6 @@
 #include "RTE_Components.h"
 #include "power_modes.h"
 #include <se_services_port.h>
-#include <retarget_init.h>
 
 /*******************************************************************************
  *  M A C R O   D E F I N E S
