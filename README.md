@@ -31,13 +31,11 @@ Changing the UART instance and pinmux is done via the retarget_config.h file.
     .
     ├── ...
     ├── device/
-    │   ├── ensemble/
-    │   |   ├── RTE/
-    │   │   │   ├── Services/
-    │   │   |   │   ├── AE1C1F4051920PH_M55_HE/retarget_config.h
-    │   │   |   │   ├── AE722F80F55D5LS_M55_HE/retarget_config.h
-    │   │   |   |   ├── AE822FA0E5597LS0_M55_HE/retarget_config.h
-    │   │   │   └── ...
+    |   ├── RTE/
+    │   │   ├── Services/
+    │   |   │   ├── AE1C1F4051920PH_M55_HE/retarget_config.h
+    │   |   │   ├── AE722F80F55D5LS_M55_HE/retarget_config.h
+    │   |   |   ├── AE822FA0E5597LS0_M55_HE/retarget_config.h
     │   │   └── ...
     │   └── ...
     └── ...
