@@ -5,7 +5,7 @@ layer:
   packs:
     - pack: ARM::CMSIS@^6.0.0
     - pack: ARM::CMSIS-Compiler@^2.0.0
-    - pack: AlifSemiconductor::Ensemble@2.2.0
+    - pack: AlifSemiconductor::Ensemble@2.2.1
   components:
     - component: ARM::CMSIS:CORE
     - component: ARM::CMSIS-Compiler:CORE
